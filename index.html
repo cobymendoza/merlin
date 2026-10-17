@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merlin — Prospect Research Mission Control</title>
+<meta name="description" content="Merlin builds a rigorous, platform-agnostic research brief, turns it into a master prompt any AI can run, and receives the results in a gold-standard CRM view.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">M</div>
+    <div>
+      <h1>Merlin</h1>
+      <p class="tagline">Prospect Research Mission Control</p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Merlin views">
+    <button class="tab is-active" data-view="brief" role="tab" aria-selected="true">1 · Brief Builder</button>
+    <button class="tab" data-view="prompt" role="tab" aria-selected="false">2 · Prompt Generator</button>
+    <button class="tab" data-view="results" role="tab" aria-selected="false">3 · Results Viewer</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ VIEW A: BRIEF BUILDER ============ -->
+  <section id="view-brief" class="view is-active" aria-label="Brief builder">
+    <div class="panel intro">
+      <h2>Build the brief</h2>
+      <p>Tell Merlin who you are and who you want to reach. Merlin turns that into a master
+      research prompt any AI platform can execute — ChatGPT, Claude, Codex, Muse — and the
+      results come back structured exactly like a gold-standard outreach workbook.</p>
+    </div>
+
+    <form id="brief-form" class="panel" autocomplete="off">
+      <fieldset>
+        <legend>About you</legend>
+        <div class="grid">
+          <label>Your name
+            <input type="text" id="f-name" placeholder="e.g. Alex Rivera">
+          </label>
+          <label>Business / studio name
+            <input type="text" id="f-business" placeholder="e.g. Rivera Creative Studio">
+          </label>
+          <label>Your role
+            <input type="text" id="f-role" placeholder="e.g. AI creative producer, web designer, consultant">
+          </label>
+          <label>What you sell
+            <input type="text" id="f-service" placeholder="The service prospects would buy from you">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Who you want to find</legend>
+        <div class="grid">
+          <label>Target industry
+            <input type="text" id="f-industry" placeholder="e.g. Ski resorts, boutique gyms, coffee brands">
+          </label>
+          <label>Sub-niche
+            <input type="text" id="f-niche" placeholder="e.g. Independent and family-run (optional)">
+          </label>
+          <label>Geography
+            <input type="text" id="f-geo" placeholder="City, region or country">
+          </label>
+          <label>Prospect type
+            <select id="f-type">
+              <option>Businesses</option>
+              <option>Brands</option>
+              <option>Venues</option>
+              <option>Creators</option>
+              <option>Mixed</option>
+            </select>
+          </label>
+          <label>Target count
+            <input type="number" id="f-count" value="100" min="10" max="5000" step="10">
+          </label>
+          <label>Record ID prefix
+            <input type="text" id="f-prefix" maxlength="8" placeholder="e.g. SKI, GYM, CFE">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Data to collect per prospect</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="d-email" checked disabled> Published email <span class="fixed">always on</span></label>
+          <label class="check"><input type="checkbox" id="d-source" checked disabled> Source URL for every field <span class="fixed">always on</span></label>
+          <label class="check"><input type="checkbox" id="d-evidence" checked disabled> Evidence type <span class="fixed">always on</span></label>
+          <label class="check"><input type="checkbox" id="d-contact" checked> Named contact person + role</label>
+          <label class="check"><input type="checkbox" id="d-website" checked> Official website</label>
+          <label class="check"><input type="checkbox" id="d-ig" checked> Instagram handle, verified</label>
+          <label class="check"><input type="checkbox" id="d-phone" checked> Phone</label>
+          <label class="check"><input type="checkbox" id="d-address" checked> Address / location</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Quality rules — fixed, always enforced</legend>
+        <ul class="rules">
+          <li><strong>Published emails only.</strong> Copied from a public source. Never guessed, never pattern-built (no invented info@ or firstname@ addresses).</li>
+          <li><strong>Multi-source verification.</strong> Never settle for the first pass — official sites, press, directories and review platforms cross-checked until the realistic ceiling is reached.</li>
+          <li><strong>Evidence on every field.</strong> A source URL and an evidence type stand behind every researched value.</li>
+          <li><strong>Deduped.</strong> One row per unique email; shared inboxes flagged so nobody gets pitched twice.</li>
+          <li><strong>Suppression respected.</strong> Dead domains, double failures and do-not-contact addresses go to the Suppression register, never back into the list.</li>
+        </ul>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="go-prompt">Generate the master prompt →</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ VIEW B: PROMPT GENERATOR ============ -->
+  <section id="view-prompt" class="view" aria-label="Prompt generator">
+    <div class="panel intro">
+      <h2>The master research prompt</h2>
+      <p><strong>How to use:</strong> copy this prompt, paste it into ChatGPT, Claude or Codex, and run it.
+      The AI does the research legwork and returns tab-ready tables. Bring those tables back here,
+      to the Results Viewer, and export them as a workbook-grade spreadsheet.</p>
+      <div class="callout">
+        <strong>The verification loop:</strong> one AI researches and fills the sheet — then a
+        <em>different</em> AI gets <strong>read + write access to the same sheet</strong> to independently
+        verify it: are the published emails real and backed by their source URLs, do the Instagram
+        handles exist and match the business, did duplicates or suppressed addresses slip in?
+        The checker writes its findings back into the record (Checked date, status fields, Notes,
+        and an Activity log entry under its own name). For this to work, the generated Google Sheet
+        must be <strong>shared with edit access</strong> to the account the verifying AI uses.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="prompt-head">
+        <span id="prompt-meta" class="muted"></span>
+        <div>
+          <button type="button" class="btn" id="regen-prompt">↻ Regenerate from brief</button>
+          <button type="button" class="btn primary" id="copy-prompt">Copy prompt</button>
+        </div>
+      </div>
+      <textarea id="prompt-out" spellcheck="false" aria-label="Generated master research prompt"></textarea>
+      <p class="muted small">The prompt encodes the Super Intelligence research standard, the gold-standard
+      workbook architecture (About · Contacts · Directory · Held contacts · Coverage · Activity log · Suppression register),
+      Instagram verification labels, and the rule that published — never guessed — emails are the only emails allowed.</p>
+    </div>
+  </section>
+
+  <!-- ============ VIEW C: RESULTS VIEWER ============ -->
+  <section id="view-results" class="view" aria-label="Results viewer">
+    <div class="panel intro">
+      <h2>Results — your CRM desk</h2>
+      <p>Paste the Contacts table an AI platform returned (CSV), load the built-in sample, or open a CSV file.
+      Search it, filter it, and export it again in the gold-standard Contacts format.</p>
+    </div>
+
+    <div class="panel">
+      <div class="load-row">
+        <button type="button" class="btn" id="load-sample">Load sample data</button>
+        <label class="btn file-btn">Open CSV file… <input type="file" id="file-in" accept=".csv,text/csv" hidden></label>
+        <button type="button" class="btn primary" id="parse-paste">Load pasted CSV</button>
+      </div>
+      <textarea id="csv-in" placeholder="Paste Contacts CSV here (header row + one prospect per line)…" spellcheck="false" aria-label="Paste CSV results"></textarea>
+
+      <div class="toolbar">
+        <input type="search" id="q" placeholder="Search name, email, region, contact…" aria-label="Search prospects">
+        <select id="flt-ig" aria-label="Filter by Instagram verification">
+          <option value="">IG verification: all</option>
+          <option>Verified</option>
+          <option>Probable</option>
+          <option>Not found</option>
+        </select>
+        <select id="flt-status" aria-label="Filter by outreach status">
+          <option value="">Outreach status: all</option>
+        </select>
+        <span id="count-line" class="muted"></span>
+      </div>
+
+      <div id="stats" class="stats" aria-live="polite"></div>
+      <div id="cards" class="cards"></div>
+
+      <div class="table-wrap">
+        <table id="grid">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="export-csv">Export Contacts CSV</button>
+        <button type="button" class="btn" id="export-template">Export workbook structure (TEMPLATE.md)</button>
+      </div>
+      <p class="muted small">Exports use the gold-standard Contacts columns — the same architecture as the reference
+      workbooks — so a Merlin export drops straight into a spreadsheet next to the About, Directory, Held contacts,
+      Coverage, Activity log and Suppression register tabs described in TEMPLATE.md.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Merlin performs no scraping itself. Merlin writes the brief; the AI platform you choose runs the research;
+  Merlin receives, checks and presents the results. The workbook architecture is modelled on two reference
+  implementations — a pair of ski-resort outreach workbooks (US and Canada editions) built to this same standard.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
